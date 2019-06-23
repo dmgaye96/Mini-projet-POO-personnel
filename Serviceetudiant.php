@@ -31,6 +31,7 @@ class Serviceetudiant
         $req->bindValue(':datenaissance', $etudiant->getDatenaissance());
         $req->bindValue(':tel', $etudiant->getTel(), PDO::PARAM_INT);
         $insert = $req->execute();
+       
         if ($insert) {
             echo "Etudiant ajouter avec succes !";
         } else {
@@ -94,8 +95,17 @@ class Serviceetudiant
             throw new Exception($e->getMessage());
         }
     }
-    public function findAll()
-    { }
+    public function findAll($table)
+    {
+        
+        try {
+            $requet = $this->db->prepare("SELECT * FROM $table");
+            $requet->execute();
+            return $requet->fetchAll(PDO::FETCH_OBJ);
+        } catch (PDOException $e) {
+            throw new Exception($e->getMessage());
+        }
+     }
     public function findBoursier($table, $colonne, $valeur)
     {
         try {

@@ -122,20 +122,24 @@
 
 
                         <div class="input-field col s6" id="Adresse" hidden>
-                                <i class="material-icons prefix">fingerprint</i>
-                                <input name="adresse" type="text" class="validate">
-                                <label for="adresse">Adresse</label>
-                            </div>
-                       
+                            <i class="material-icons prefix">fingerprint</i>
+                            <input name="adresse" type="text" class="validate">
+                            <label for="adresse">Adresse</label>
+                        </div>
+
 
 
                         <div id="typedebourse" hidden>
                             <label>Type de Bourse</label>
-                            <select class="browser-default">
-                                <?php 
+                            <select class="browser-default" name="type">
+
+                                <?php
+                                $typee = new Serviceetudiant();
                                 
+                                foreach ($typee->findAll("type") as $libe) {
+                                    echo " <option value=$libe->id_type> $libe->libelle</option> ";
+                                }
                                 ?>
-                                <option value="">Choose your option</option>
 
                             </select>
                         </div>
@@ -143,15 +147,16 @@
 
                         <div id="chambre" hidden>
                             <label>Chambre</label>
-                            <select class="browser-default">
-                                <option value="" disabled selected>Choose your option</option>
+                            <select class="browser-default" name="chambre">
 
-                            </select>
-                        </div>
-                        <div id="batiment" hidden>
-                            <label>Batiment</label>
-                            <select class="browser-default">
-                                <option value="" disabled selected>Choose your option</option>
+                                <?php
+                                $ch = new Serviceetudiant();
+                                foreach ($ch->findAll("chambre") as $val) {
+                                    echo " <option value=$val->id_chambre> $val->nomchambre</option> ";
+                                }
+
+                                ?>
+
 
                             </select>
                         </div>
@@ -198,7 +203,7 @@
                 $('.sidenav').sidenav();
             });
         </script>
-      <!--   <script>
+        <!--   <script>
             $(document).ready(function() {
                 $('input#input_text, textarea#textarea2').characterCounter();
             });
@@ -209,24 +214,25 @@
             $(function() {
 
                 $("#non").click(function() {
-                    $("#boursier").hide();
-                    $("#loge").hide();
                     $("#Adresse").show();
+                    $("#typedebourse").hide();
+                    $("#batiment").hide();
+                    $("#chambre").hide();
 
                 });
                 $("#boursier").click(function() {
-                    $("#non").hide();
-                    $("#loge").hide();
+                    $("#Adresse").hide();
                     $("#typedebourse").show();
-
+                    $("#batiment").hide();
+                    $("#chambre").hide();
                 });
                 $("#loge").click(function() {
+                    $("#Adresse").hide();
                     $("#typedebourse").show();
                     $("#chambre").show();
-                    $("batiment").show();
-                    $("#boursier").hide();
-                    $("#non").hide();
-                    $("#batiment").show();
+
+
+
 
                 });
 
@@ -263,7 +269,7 @@
 
 
     </div>
-<!--     <script>
+    <!--     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var elems = document.querySelectorAll('select');
             var instances = M.FormSelect.init(elems, options);
@@ -279,24 +285,32 @@
 
 
     if (isset($_POST['ajouter'])) {
-        $matricul = $_POST['matricule'];
+        $matricule = $_POST['matricule'];
         $nom = $_POST['nom'];
         $prenom = $_POST['prenom'];
         $email = $_POST['email'];
         $datenaissance = $_POST['date'];
         $tel = $_POST['tel'];
-        $adresse=$_POST['adresse'];
-        $etudiant = new  Nonboursier($matricul, $nom, $prenom, $email, $datenaissance, $tel,$adresse);
+        $adresse = $_POST['adresse'];
+        $id_type = $_POST['type'];
+        $id_chambre = $_POST['chambre'];
+       
         $cont = new Serviceetudiant();
-        $cont->add($etudiant);
-      /*   $cont->add($noboursier); */
-        
-
-        //ajouter un boursier
-        /* 
-        $bour= new Boursier($id_etudiant,$id_type);
-        $conte= new  Serviceetudiant();
-        $conte=->add($bour); */
+        if ( !empty($adresse) ) {
+           
+            $etudiant = new  Nonboursier($matricule, $nom, $prenom, $email, $datenaissance, $tel, $adresse);
+          
+            $cont->add($etudiant);
+        }  elseif (!empty($id_type)&& empty($id_chambre)) {
+            $etudiant = new Boursier($matricule, $nom, $prenom, $email, $datenaissance, $tel, $id_type);
+            $cont = new Serviceetudiant();
+            $cont->add($etudiant);
+        } 
+            else
+            $etudiant = new Loger($matricule, $nom, $prenom, $email, $datenaissance, $tel, $id_type, $id_chambre);
+            $cont = new Serviceetudiant();
+            $cont->add($etudiant);
+   
     }
 
 
