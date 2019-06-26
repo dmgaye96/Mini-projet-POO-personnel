@@ -2,13 +2,20 @@
 require 'Autoloader.php';
 Autoloader::register();
 
-$cont = new Serviceetudiant();
-$etudiant = new  Loger("nsjnNcdn", "DIOUFFX", "Morre", "xndjxcd@gmail.com", "1994-02-10", "76974125","1","1");
-$cont->add($etudiant);
-var_dump($etudiant); 
+// ajouter un batima
+/* $cont = new Serviceetudiant();
+$etudiant = new  Batiment("BAtima DMG");
+$cont-> addbatiment($etudiant);
+var_dump($etudiant); */
 
-/* 
+//ajouter u  Chambre 
+/* $cont = new Serviceetudiant(); */
+/* $etudiant = new  Chambre(14,'chambredfgsdxxeee');
+$cont-> addchambre($etudiant);
+var_dump($etudiant);
+ */
 
-$objet1= new Serviceetudiant();
-$var=$objet1->findAll("etudiant");
-var_dump($var);  */
+$objet1 = new Serviceetudiant();
+foreach ($objet1->findloge() as $libe) {
+    var_dump($libe);
+}
