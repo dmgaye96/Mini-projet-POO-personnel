@@ -1,5 +1,5 @@
 <?php
-require 'class/Autoloader.php';
+require 'Autoloader.php';
 Autoloader::register();
 $bdd = new PDO('mysql:host=127.0.0.1;dbname=universite', 'root', 'dmg');
 
@@ -32,46 +32,48 @@ if (isset($_POST['ajouter'])) {
                     $reqtel = $bdd->prepare("SELECT * FROM etudiant WHERE tel=?");
                     $reqtel->execute(array($tel));
                     $telexiste = $reqtel->rowCount();
-
-
+                    
+                   
                     if ($telexiste == 0) {
-                        $cont = new Serviceetudiant();
+                        $cont=new Serviceetudiant();
                         if (!empty($adresse) && empty($id_type) && empty($id_chambre)) {
                             $etudiant = new  Nonboursier($matricule, $nom, $prenom, $email, $datenaissance, $tel, $adresse);
                             $cont->add($etudiant);
-                            $eurreur = "<font color=green>" . "L ' Etudiant " . ' ' . $prenom . ' ' . $nom . " a été ajouter avec succès c'est un non Boursier " . "</font> <a href=\"class/Listesdesetudiant.php\"> <label>
-                          <input type=\"submit\" value=\"Liste des etudiants\" class=\"waves-effect waves light-blue\">
+                            $eurreur = "<font color=green>" . "L ' Etudiant " . ' ' . $prenom . ' ' . $nom . " a ete ajouter avec success C est un non Boursier " . "</font> <a href=\"Listesdesetudiant.php\"> <label>
+                          <input type=\"submit\" value=\"Listes des etudiants\" class=\"waves-effect waves light-blue\">
                       </label></a>";
                         } elseif (empty($adresse) && !empty($id_type) && empty($id_chambre)) {
                             $etudiant = new Boursier($matricule, $nom, $prenom, $email, $datenaissance, $tel, $id_type);
                             $cont->add($etudiant);
-                            $eurreur = "<font color=green>" . "L ' Etudiant " . ' ' . $prenom . ' ' . $nom . " a été ajouter avec succès   c 'est un Boursier " . "</font><a href=\"class/Listesdesetudiant.php\"> <label>
-                          <input type=\"submit\" value=\"Liste des etudiants\" class=\"waves-effect waves light-blue\">
+                            $eurreur = "<font color=green>" . "L ' Etudiant " . ' ' . $prenom . ' ' . $nom . " a ete ajouter avec success  C est un Boursier " . "</font><a href=\"Listesdesetudiant.php\"> <label>
+                          <input type=\"submit\" value=\"Listes des etudiants\" class=\"waves-effect waves light-blue\">
                       </label></a>";
                         } elseif (empty($adresse) && !empty($id_type) && !empty($id_chambre)) {
                             $etudiant = new Loger($matricule, $nom, $prenom, $email, $datenaissance, $tel, $id_type, $id_chambre);
                             $cont->add($etudiant);
-                            $eurreur = "<font color=green>" . "L ' Etudiant " . ' ' . $prenom . ' ' . $nom . " a été ajouter avec succès   c' est un Boursier Logé" . "</font><a href=\"class/Listesdesetudiant.php\"> <label>
-                          <input type=\"submit\" value=\"Liste des etudiants\" class=\"waves-effect waves light-blue\">
+                            $eurreur = "<font color=green>" . "L ' Etudiant " . ' ' . $prenom . ' ' . $nom . " a ete ajouter avec success  C est un Boursier Loge" . "</font><a href=\"Listesdesetudiant.php\"> <label>
+                          <input type=\"submit\" value=\"Listes des etudiants\" class=\"waves-effect waves light-blue\">
                       </label></a>";
                         } else {
-                            $eurreur = "<font color=red>" . ' ' . $prenom . ' ' . $nom . "veuiller remplir les champs de requis svp Reassayer !" . "</font>";
+                            $eurreur = "<font color=red>" . ' ' . $prenom . ' ' . $nom . "veuiller remplir les champs de requise svp Reassayer !" . "</font>";
                         }
+
+
                     } else {
 
-                        $eurreur = "<font color=red>" . ' ' . $prenom . ' ' . $nom . "le numero de telephone est dejà pris reassayer !" . "</font>";
+                        $eurreur = "<font color=red>" . ' ' . $prenom . ' ' . $nom . "le numero de telephone est deja pris reassayer !" . "</font>";
                     }
                 } else {
-                    $eurreur = "<font color=red>" . ' ' . $prenom . ' ' . $nom . "le matricule est dejà pris reassayer !" . "</font>";
+                 $eurreur = "<font color=red>" . ' ' . $prenom . ' ' . $nom . "le matricul est deja pris reassayer !" . "</font>";
                 }
             } else {
-                $eurreur = "<font color=red>" . ' ' . $prenom . ' ' . $nom . "le mail existe dejà !" . "</font>";
+                $eurreur = "<font color=red>" . ' ' . $prenom . ' ' . $nom . "le mail existe deja !" . "</font>";
             }
         } else {
-            $eurreur = "<font color=red>" . ' ' . $prenom . ' ' . $nom . "le mail n'est pas valide !" . "</font>";
+            $eurreur = "<font color=red>" . ' ' . $prenom . ' ' . $nom . "le mail n est pas valide !" . "</font>";
         }
     } else {
-        $eurreur = "<font color=red>" . ' ' . $prenom . ' ' . $nom . "veuiller remplir les champs  requis svp  !" . "</font>";
+        $eurreur = "<font color=red>" . ' ' . $prenom . ' ' . $nom . "veuiller remplir les champs de requise svp Reassayer !" . "</font>";
     }
 }
 ?>
@@ -82,12 +84,14 @@ if (isset($_POST['ajouter'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="/css/icon.css">
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <!-- Compiled and minified CSS -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="js/jquery-3.4.1.min.js"></script>
+    <!--  CDN jQuery -->
+    <script src="jquery-3.4.1.min.js"></script>
 
     <title>Document</title>
 </head>
@@ -106,16 +110,20 @@ if (isset($_POST['ajouter'])) {
                         <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
                         <ul class="right toggle-on-med-and-down">
                             <li><a href="index.php">Ajouter Etudiant</a></li>
-                            <li><a href="class/Listesdesetudiant.php"> Liste des Etudiants </a></li>
-                            <li><a href="class/ajouterbatiment.php" ">Ajouter un Logement</a></li>
+                            <li><a href="Listesdesetudiant.php"> Liste des Etudiant </a></li>
+                            <li><a href="ajouterbatiment.php" ">Ajouter un Logement</a></li>
+                            <li><a href=" Rechercheboursier.php">Recherche de Boursier</a></li>
+                            <li><a href="Listeboursier.php">Liste des Boursiers</a></li>
                         </ul>
                     </div>
                 </nav>
 
                 <ul class="sidenav" id="mobile-demo">
                     <li><a href="index.php">Ajouter Etudiant</a></li>
-                    <li><a href="class/Listesdesetudiant.php"> Liste des Etudiants </a></li>
-                    <li><a href="class/ajouterbatiment.php" ">Ajouter un Logement</a></li>
+                    <li><a href="Listesdesetudiant.php"> Liste des Etudiant </a></li>
+                    <li><a href="ajouterbatiment.php" ">Ajouter un Logement</a></li>
+                        <li><a href=" Rechercheboursier.php">Recherche de Boursier</a></li>
+                    <li><a href="Listeboursier.php">Liste des Boursiers</a></li>
                 </ul>
 
 
@@ -127,37 +135,37 @@ if (isset($_POST['ajouter'])) {
 
             <div class="col s4">
                 <h4 class="light-blue-text">Ajouter un Etudiant</h4>
-                <h6 class="light-blue-text">Tous les champs <font color=red> (*)</font> sont requis </h6>
+                <h6 class="light-blue-text">Tout les champs <font color=red> (*)</font> sont requisent </h6>
                 <div class="row">
                     <form class="col s12" action="#" method="post">
 
                         <div class="row">
                             <div class="input-field col s6">
-                                <i  class="material-icons prefix ">
+                                <i class="material-icons prefix">
                                     perm_identity</i>
-                                <input name="prenom" type="text" minlength="2" maxlength="25" size="25" for="Prenom" class="validate" value="<?php
-                                                                                                                                                if (isset($prenom)) {
-                                                                                                                                                    echo $prenom;
-                                                                                                                                                }
-                                                                                                                                                ?>">
-                                <label class="light-blue-text">Prénom<font color=red> *</font></label>
+                                <input name="prenom" type="text"  minlength="2" maxlength="25" size="25" for="Prenom" class="validate" value="<?php
+                                                                                            if (isset($prenom)) {
+                                                                                                echo $prenom;
+                                                                                            }
+                                                                                            ?>">
+                                <label class="light-blue-text">Prenom<font color=red> *</font></label>
                             </div>
                             <div class="input-field col s6">
                                 <i class="material-icons prefix">
                                     perm_identity</i>
                                 <input name="nom" type="text" minlength="1" maxlength="20" size="20" class="validate" value="<?php if (isset($nom)) {
-                                                                                                                                    echo $nom;
-                                                                                                                                }
-                                                                                                                                ?>">
-                                <label for="Nom" class="light-blue-text">Nom<font color=red> *</font></label>
+                                                                                            echo $nom;
+                                                                                        }
+                                                                                        ?>">
+                                <label for="Nom"  class="light-blue-text">Nom<font color=red> *</font></label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s6">
                                 <i class="material-icons prefix">email</i>
                                 <input type="email" class="validate" minlength="2" maxlength="30" size="30" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" name="email" value="<?php if (isset($email)) {
-                                                                                                                                                                                        echo $email;
-                                                                                                                                                                                    }  ?>">
+                                                                                                echo $email;
+                                                                                            }  ?>">
                                 <label class="light-blue-text" for="Email">Email<font color=red> *</font></label>
                             </div>
 
@@ -166,9 +174,9 @@ if (isset($_POST['ajouter'])) {
                             <div class="input-field col s6">
                                 <i class="material-icons prefix">fingerprint</i>
                                 <input name="matricule" type="text" minlength="4" maxlength="4" size="4" class="validate" value="<?php if (isset($matricule)) {
-                                                                                                                                        echo $matricule;
-                                                                                                                                    }   ?>">
-                                <label class="light-blue-text" for="Matricule">Matricule<font color=red> *</font></label>
+                                                                                                echo $matricule;
+                                                                                            }   ?>">
+                                <label class="light-blue-text"  for="Matricule">Matricule<font color=red> *</font></label>
                             </div>
                         </div>
 
@@ -176,20 +184,21 @@ if (isset($_POST['ajouter'])) {
                             <div class="input-field col s6">
                                 <i class="material-icons prefix">date_range</i>
                                 <input name="date" type="date" max="2019-01-01" min="1980-01-01" class="datepicker" value="<?php if (isset($datenaissance)) {
-                                                                                                                                echo $datenaissance;
-                                                                                                                            } ?>">
+                                                                                                echo $datenaissance;
+                                                                                            } ?>">
                                 <label class="light-blue-text" for="icon_prefix">Date de Naissance<font color=red> *</font></label>
                             </div>
                             <div class="input-field col s6">
                                 <i class="material-icons prefix">phone</i>
-                                <input id="icon_telephone" type="tel" pattern="^[0-9-+s()]*$" name="tel" class="validate" value="<?php if (isset($tel)) {
-                                                                                                                                        echo $tel;
-                                                                                                                                    } ?>">
-                                <label class="light-blue-text" for="icon_telephone">Téléphone<font color=red> *</font></label>
+                                <input id="icon_telephone" type="tel" pattern="^[0-9-+s()]*$"
+                                 name="tel" class="validate" value="<?php if (isset($tel)) {
+                                                                                                                echo $tel;
+                                                                                                            } ?>">
+                                <label class="light-blue-text" for="icon_telephone">Telephone<font color=red> *</font></label>
                             </div>
                         </div>
 
-                        <h6 class="light-blue-text">Selectionner la categorie d'etudiant <font color=red> *</font>
+                        <h6 class="light-blue-text">Selectionner la categorie de l 'Etudiant <font color=red> *</font>
                         </h6>
                         <p id="non">
                             <label>
@@ -254,7 +263,7 @@ if (isset($_POST['ajouter'])) {
 
 
                         <label class="light-blue-text">
-                            <input type="submit" value="AJOUTER" class='btn btn light-blue' name="ajouter">
+                            <input type="submit" value="AJOUTER" class="waves-effect waves light-blue text  btn text" name="ajouter">
                         </label>
 
                     </form>
@@ -265,8 +274,44 @@ if (isset($_POST['ajouter'])) {
                     ?>
 
                 </div>
+
+
             </div>
         </div>
+
+
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('.sidenav');
+                var instances = M.Sidenav.init(elems, options);
+            });
+
+            // Or with jQuery
+
+            $(document).ready(function() {
+                $('.sidenav').sidenav();
+            });
+
+
+            document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('.sidenav');
+                var instances = M.Sidenav.init(elems, options);
+            });
+
+            // Initialize collapsible (uncomment the lines below if you use the dropdown variation)
+            // var collapsibleElem = document.querySelector('.collapsible');
+            // var collapsibleInstance = M.Collapsible.init(collapsibleElem, options);
+
+            // Or with jQuery
+
+            $(document).ready(function() {
+                $('.sidenav').sidenav();
+            });
+        </script>
+
+
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -274,16 +319,19 @@ if (isset($_POST['ajouter'])) {
                 var instances = M.Datepicker.init(elems, options);
             });
 
+            // Or with jQuery
+
             $(document).ready(function() {
                 $('.datepicker').datepicker();
             });
-
+        </script>
+        <script>
             document.addEventListener('DOMContentLoaded', function() {
                 var elems = document.querySelectorAll('.sidenav');
                 var instances = M.Sidenav.init(elems, options);
             });
 
-
+            // Or with jQuery
 
             $(document).ready(function() {
                 $('.sidenav').sidenav();
@@ -355,6 +403,17 @@ if (isset($_POST['ajouter'])) {
 
 
     </div>
+    <!--     <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var elems = document.querySelectorAll('select');
+                var instances = M.FormSelect.init(elems, options);
+            });
+
+            $(document).ready(function() {
+                $('select').formSelect();
+            });
+        </script> -->
+
 
 </body>
 
